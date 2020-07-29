@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class PetService {
 
     @Autowired
     PetRepository petRepository;
 
-    @Transactional
     public Pet savePet(Pet pet) {
         Pet newPet = petRepository.save(pet);
         Customer customer = newPet.getCustomer();
