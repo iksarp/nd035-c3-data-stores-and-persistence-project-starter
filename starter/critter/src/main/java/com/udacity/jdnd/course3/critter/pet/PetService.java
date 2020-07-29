@@ -1,8 +1,11 @@
 package com.udacity.jdnd.course3.critter.pet;
 
+import com.udacity.jdnd.course3.critter.user.customer.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,8 +15,17 @@ public class PetService {
     @Autowired
     PetRepository petRepository;
 
+    @Transactional
     public Pet savePet(Pet pet) {
-        return petRepository.save(pet);
+        Pet newPet = petRepository.save(pet);
+        Customer customer = newPet.getCustomer();
+        if (customer != null) {
+            if (customer.getPets() == null) {
+                customer.setPets(new ArrayList<>());
+            }
+            customer.getPets().add(pet);
+        }
+        return newPet;
     }
 
     public List<Pet> getAllPets() {

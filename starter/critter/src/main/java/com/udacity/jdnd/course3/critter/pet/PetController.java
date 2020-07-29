@@ -27,10 +27,6 @@ public class PetController {
     @PostMapping
     public PetDTO savePet(@RequestBody PetDTO petDTO) {
         Pet newPet = petService.savePet(toPet(petDTO));
-        Customer customer = newPet.getCustomer();
-        if (customer != null) {
-            customerService.addPetToCustomer(customer, newPet);
-        }
         return toDTO(newPet);
     }
 
